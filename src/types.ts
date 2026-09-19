@@ -34,7 +34,81 @@ export type Plan = {
   tables: Table[];
   guests: Guest[];
   rules: Rule[];
+  layout?: VenueLayout;
   updatedAt: number;
+};
+
+// ---- 宴会厅摆桌规划（单位：米）----
+
+export type DoorSide = 'top' | 'bottom' | 'left' | 'right';
+
+export type Pillar = {
+  id: string;
+  x: number; // 柱中心 x
+  y: number; // 柱中心 y
+  size: number; // 边长
+};
+
+export type Venue = {
+  width: number; // 场地宽（x 方向）
+  length: number; // 场地长（y 方向）
+  doorSide: DoorSide; // 门开在哪一侧墙
+  doorOffset: number; // 门中心沿墙距墙角
+  doorWidth: number; // 门宽
+  pillars: Pillar[];
+};
+
+export type LayoutTableKind = 'head' | 'reception' | 'guest';
+
+export type LayoutTable = {
+  id: string;
+  label: string;
+  x: number; // 桌中心 x
+  y: number; // 桌中心 y
+  diameter: number; // 圆桌直径
+  kind: LayoutTableKind;
+};
+
+export type LayoutSettings = {
+  tableGap: number; // 桌与桌最小净距
+  mainAisleWidth: number; // 主通道宽度
+  wallGap: number; // 桌边离墙最小距离
+  pillarGap: number; // 桌边离柱最小净距
+  doorClearance: number; // 门前留空深度
+};
+
+export type LayoutIssueKind =
+  | 'table-gap'
+  | 'main-aisle'
+  | 'wall-gap'
+  | 'pillar-gap'
+  | 'door-blocked'
+  | 'out-of-bounds';
+
+export type LayoutIssue = {
+  id: string;
+  kind: LayoutIssueKind;
+  tableIds: string[];
+  actual: number; // 实际距离/宽度
+  required: number; // 要求距离/宽度
+  message: string;
+  x: number; // 图上标注位置
+  y: number;
+};
+
+export type LayoutRound = {
+  round: number;
+  at: number;
+  issueCount: number;
+  issues: LayoutIssue[];
+};
+
+export type VenueLayout = {
+  venue: Venue;
+  settings: LayoutSettings;
+  tables: LayoutTable[];
+  rounds: LayoutRound[];
+  currentRound: number;
 };
 
 export type Command =
@@ -42,6 +116,7 @@ export type Command =
   | { type: 'updateTables'; tables: Table[] }
   | { type: 'updateGuests'; guests: Guest[] }
   | { type: 'updateRules'; rules: Rule[] }
+  | { type: 'updateLayout'; layout: VenueLayout }
   | { type: 'updateTable'; table: Table }
   | { type: 'addGuest'; guest: Guest }
   | { type: 'removeGuest'; guestId: string }
