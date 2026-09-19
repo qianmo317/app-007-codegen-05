@@ -99,6 +99,7 @@ export default function PlanPage() {
         <div className="header-actions">
           <button onClick={handleUndo} disabled={!historyRef.current?.canUndo()}>撤销</button>
           <button onClick={handleRedo} disabled={!historyRef.current?.canRedo()}>重做</button>
+          <button onClick={() => navigate(`/plan/${plan.id}/venue`)}>场地布局</button>
           <button onClick={() => navigate(`/plan/${plan.id}/print`)}>打印 / 导出</button>
         </div>
       </header>

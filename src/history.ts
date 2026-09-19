@@ -36,6 +36,9 @@ export function createHistoryManager(initial: Plan): HistoryManager {
         if (idx >= 0) p.tables[idx] = deepClone(command.table);
         break;
       }
+      case 'updateLayout':
+        p.layout = deepClone(command.layout);
+        break;
       case 'addGuest':
         p.guests.push(deepClone(command.guest));
         break;

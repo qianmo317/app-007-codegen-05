@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Plan from './pages/Plan';
+import Venue from './pages/Venue';
 import PrintView from './pages/PrintView';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/plan/:id" element={<Plan />} />
+        <Route path="/plan/:id/venue" element={<Venue />} />
         <Route path="/plan/:id/print" element={<PrintView />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
